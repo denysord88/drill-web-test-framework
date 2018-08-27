@@ -16,18 +16,28 @@
  */
 package steps;
 
+import initial.TestProperties;
+import initial.WebBrowser;
 import pages.BasePage;
-import pages.NavigationPage;
+import pages.QueryExceptionPage;
 import pages.QueryResultsPage;
 
-public final class QuerySteps {
+import java.util.List;
 
-  private QuerySteps() {
+public final class QueryExceptionsSteps {
+
+  private QueryExceptionsSteps() {
   }
 
-  public static QueryResultsPage runQuery(String queryText) {
-    return BasePage.getPage(NavigationPage.class)
-        .navigateQuery()
-        .submitQuery(queryText);
+  public static boolean hasException() {
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
+    return BasePage.getPage(QueryExceptionPage.class)
+        .hasQueryExceptionResult();
+  }
+
+  public static String getFullStackTrace() {
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
+    return BasePage.getPage(QueryExceptionPage.class)
+        .getFullStackTrace();
   }
 }

@@ -16,6 +16,7 @@
  */
 package pages;
 
+import initial.TestProperties;
 import initial.WebBrowser;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -56,59 +57,59 @@ public class NavigationPage extends BasePage {
 
   public void navigateHome() {
     home.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public QueryPage navigateQuery() {
     query.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
     return getPage(QueryPage.class);
   }
 
   public void navigateProfiles() {
     profiles.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public void navigateStorage() {
     storage.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public void navigateMetrics() {
     metrics.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public void navigateThreads() {
     threads.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public void navigateLogs() {
     logs.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public void navigateOptions() {
     options.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public void navigateDocumentation() {
     documentation.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
   }
 
   public ChooseAuthMethodPage navigateLogin() {
     login.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
     return getPage(ChooseAuthMethodPage.class);
   }
 
   public NavigationPage navigateLogout() {
     logout.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
     return getPage(NavigationPage.class);
   }
 

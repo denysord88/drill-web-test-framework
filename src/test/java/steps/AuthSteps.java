@@ -16,6 +16,8 @@
  */
 package steps;
 
+import initial.TestProperties;
+import initial.WebBrowser;
 import pages.BasePage;
 import pages.NavigationPage;
 
@@ -25,6 +27,7 @@ public final class AuthSteps {
   }
 
   public static NavigationPage login(String login, String password) {
+    WebBrowser.getDriver().get(TestProperties.drillHost);
     return BasePage.getPage(NavigationPage.class)
         .navigateLogin()
         .openLoginPage()
@@ -34,6 +37,7 @@ public final class AuthSteps {
   }
 
   public static NavigationPage logOut() {
+    WebBrowser.getDriver().get(TestProperties.drillHost);
     return BasePage.getPage(NavigationPage.class)
         .navigateLogout();
   }

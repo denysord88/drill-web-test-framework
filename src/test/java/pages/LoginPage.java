@@ -16,6 +16,7 @@
  */
 package pages;
 
+import initial.TestProperties;
 import initial.WebBrowser;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -59,7 +60,7 @@ public class LoginPage extends BasePage {
 
   public NavigationPage submit() {
     submitLogin.click();
-    WebBrowser.waitSeconds(1);
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
     return getPage(NavigationPage.class);
   }
 }

@@ -17,8 +17,11 @@
 package steps;
 
 import pages.BasePage;
+import pages.ErrorPage;
+import pages.QueryExceptionPage;
 import pages.QueryResultsPage;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public final class QueryResultsSteps {
@@ -27,18 +30,38 @@ public final class QueryResultsSteps {
   }
 
   public static int rowsCount() {
+    if(BasePage.getPage(ErrorPage.class).hasErrorOnPage() ||
+        BasePage.getPage(QueryExceptionPage.class).hasQueryExceptionResult()) {
+      return 0;
+    }
+
     return BasePage.getPage(QueryResultsPage.class)
         .getResultsTableBody()
         .size();
   }
 
   public static int columnsCount() {
+    if(BasePage.getPage(ErrorPage.class).hasErrorOnPage() ||
+        BasePage.getPage(QueryExceptionPage.class).hasQueryExceptionResult()) {
+      return 0;
+    }
+
     return BasePage.getPage(QueryResultsPage.class)
         .getResultsTableHeader()
         .size();
   }
 
   public static List getRow(int rowId) {
+    if(BasePage.getPage(ErrorPage.class).hasErrorOnPage()) {
+      LinkedList<String> res = new LinkedList<>();
+      res.add(BasePage.getPage(ErrorPage.class).getFullStackTrace());
+      return res;
+    }
+    if(BasePage.getPage(QueryExceptionPage.class).hasQueryExceptionResult()) {
+      LinkedList<String> res = new LinkedList<>();
+      res.add(BasePage.getPage(QueryExceptionPage.class).getFullStackTrace());
+      return res;
+    }
     return BasePage.getPage(QueryResultsPage.class)
         .getResultsTableBody()
         .get(rowId);

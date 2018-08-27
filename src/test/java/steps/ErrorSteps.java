@@ -16,18 +16,25 @@
  */
 package steps;
 
+import initial.TestProperties;
+import initial.WebBrowser;
 import pages.BasePage;
-import pages.NavigationPage;
-import pages.QueryResultsPage;
+import pages.ErrorPage;
 
-public final class QuerySteps {
+public final class ErrorSteps {
 
-  private QuerySteps() {
+  private ErrorSteps() {
   }
 
-  public static QueryResultsPage runQuery(String queryText) {
-    return BasePage.getPage(NavigationPage.class)
-        .navigateQuery()
-        .submitQuery(queryText);
+  public static boolean hasError() {
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
+    return BasePage.getPage(ErrorPage.class)
+        .hasErrorOnPage();
+  }
+
+  public static String getFullStackTrace() {
+    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
+    return BasePage.getPage(ErrorPage.class)
+        .getFullStackTrace();
   }
 }
