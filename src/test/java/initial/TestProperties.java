@@ -28,6 +28,8 @@ public abstract class TestProperties {
 
   public static boolean secureDrill;
 
+  public static int defaultTimeout;
+
   public static String drillUserName;
 
   public static String drillUserPassword;
@@ -40,6 +42,7 @@ public abstract class TestProperties {
       driverType = WebBrowser.DRIVER.valueOf(p.getProperty("DRIVER_TYPE"));
       webdriversPath = p.getProperty("WEBDRIVERS_PATH");
       secureDrill = Boolean.parseBoolean(p.getProperty("SECURE_DRILL"));
+      defaultTimeout = Integer.parseInt(p.getProperty("DEFAULT_TIMEOUT"));
       drillUserName = p.getProperty("DRILL_USER_NAME");
       drillUserPassword = p.getProperty("DRILL_USER_PASSWORD");
     } catch (Exception e) {

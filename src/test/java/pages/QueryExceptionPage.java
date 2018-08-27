@@ -16,18 +16,32 @@
  */
 package pages;
 
-import initial.TestProperties;
-import initial.WebBrowser;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class ChooseAuthMethodPage extends BasePage {
-  @FindBy(partialLinkText = "Login using FORM AUTHENTICATION")
-  private WebElement loginUsingAuthentication;
+import java.util.LinkedList;
+import java.util.List;
 
-  public LoginPage openLoginPage() {
-    loginUsingAuthentication.click();
-    WebBrowser.waitSeconds(TestProperties.defaultTimeout);
-    return getPage(LoginPage.class);
+public class QueryExceptionPage extends BasePage {
+  @FindBy(xpath = "/html/body/div[2]")
+  private WebElement exceptionElement;
+
+  public String getFullStackTrace() {
+    try{
+      exceptionElement.getText();
+    } catch (NoSuchElementException e) {
+      return "Selenium WebDriver error!\n" + e.getMessage();
+    }
+    return exceptionElement.getText().replace("back", "").trim();
+  }
+
+  public boolean hasQueryExceptionResult() {
+    try{
+      exceptionElement.getText();
+    } catch (NoSuchElementException e) {
+      return false;
+    }
+    return exceptionElement.getText().replace("back", "").trim().startsWith("Query Failed: ");
   }
 }

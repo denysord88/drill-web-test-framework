@@ -34,7 +34,7 @@ public class DateOutputTest extends BaseUnsecureTest {
 
   @Test(groups = {"functional"})
   public void selectDateQuery2() {
-    QuerySteps.runSimpleQuery("SELECT * FROM cp.`employee.json`;");
+    QuerySteps.runQuery("SELECT * FROM cp.`employee.json`;");
     String result = (String) QueryResultsSteps.getRow(0).get(0);
     String expected = "1";
     assertEquals(result, expected);
@@ -42,7 +42,7 @@ public class DateOutputTest extends BaseUnsecureTest {
 
   @Test(groups = {"functional"})
   public void selectTimestampZeroQuery() {
-    QuerySteps.runSimpleQuery("select timestamp '2017-04-06 11:22:33';");
+    QuerySteps.runQuery("select timestamp '2017-04-06 11:22:33';");
     String result = (String) QueryResultsSteps.getRow(0).get(0);
     String expected = "2017-04-06 11:22:33.0";
     assertEquals(result, expected);
@@ -50,7 +50,7 @@ public class DateOutputTest extends BaseUnsecureTest {
 
   @Test(groups = {"functional"})
   public void selectTimestampOneQuery() {
-    QuerySteps.runSimpleQuery("select timestamp '2017-04-06 11:22:33.1';");
+    QuerySteps.runQuery("select timestamp '2017-04-06 11:22:33.1';");
     String result = (String) QueryResultsSteps.getRow(0).get(0);
     String expected = "2017-04-06 11:22:33.1";
     assertEquals(result, expected);
@@ -58,7 +58,7 @@ public class DateOutputTest extends BaseUnsecureTest {
 
   @Test(groups = {"functional"})
   public void selectTimestampTwoQuery() {
-    QuerySteps.runSimpleQuery("select timestamp '2017-04-06 11:22:33.12';");
+    QuerySteps.runQuery("select timestamp '2017-04-06 11:22:33.12';");
     String result = (String) QueryResultsSteps.getRow(0).get(0);
     String expected = "2017-04-06 11:22:33.12";
     assertEquals(result, expected);
@@ -66,7 +66,7 @@ public class DateOutputTest extends BaseUnsecureTest {
 
   @Test(groups = {"functional"})
   public void selectTimestampThreeQuery() {
-    QuerySteps.runSimpleQuery("select timestamp '2017-04-06 11:22:33.123';");
+    QuerySteps.runQuery("select timestamp '2017-04-06 11:22:33.123';");
     String result = (String) QueryResultsSteps.getRow(0).get(0);
     String expected = "2017-04-06 11:22:33.123";
     assertEquals(result, expected);
@@ -74,7 +74,7 @@ public class DateOutputTest extends BaseUnsecureTest {
 
   @Test(groups = {"functional"})
   public void selectTimeQuery() {
-    QuerySteps.runSimpleQuery("select time '11:22:33';");
+    QuerySteps.runQuery("select time '11:22:33';");
     String result = (String) QueryResultsSteps.getRow(0).get(0);
     String expected = "11:22:33";
     assertEquals(result, expected);
