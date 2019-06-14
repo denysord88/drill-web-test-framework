@@ -37,6 +37,7 @@ public class StorageTest extends BaseRestTest {
   @Test
   public void testStoragePage() {
     given()
+        .filter(sessionFilter)
         .when()
         .get("/storage.json")
         .then()
@@ -46,7 +47,7 @@ public class StorageTest extends BaseRestTest {
   @Test
   public void testStorageStoragePlugins() {
     //Get the response
-    Response response = get("/storage.json").then().extract().response();
+    Response response = given().filter(sessionFilter).when().get("/storage.json").then().extract().response();
     //Extract the plugin names from the response
     List<String> pluginNames = response.jsonPath().getList("name");
     //Iterate through the pluginNames
@@ -59,6 +60,7 @@ public class StorageTest extends BaseRestTest {
       }
       else if(pluginName.equalsIgnoreCase("cp") || pluginName.equalsIgnoreCase("dfs")) {
         given()
+            .filter(sessionFilter)
             .pathParam("pluginName", pluginName)
             .when()
             .get("/storage/{pluginName}.json")
@@ -70,6 +72,7 @@ public class StorageTest extends BaseRestTest {
       }
       else if(pluginName.equalsIgnoreCase("kudu") || pluginName.equalsIgnoreCase("mongo") || pluginName.equalsIgnoreCase("s3")) {
         given()
+            .filter(sessionFilter)
             .pathParam("pluginName", pluginName)
             .when()
             .get("/storage/{pluginName}.json")
@@ -97,6 +100,7 @@ public class StorageTest extends BaseRestTest {
         "  }" +
         "}";
     given()
+        .filter(sessionFilter)
         .body(newPlugin)
         .with()
         .contentType("application/json")
@@ -109,6 +113,7 @@ public class StorageTest extends BaseRestTest {
   @Test(dependsOnMethods = {"addNewPlugin"})
   public void getTestPlugin() {
     given()
+        .filter(sessionFilter)
         .when()
         .get("/storage/testPlugin.json")
         .then()
@@ -125,6 +130,7 @@ public class StorageTest extends BaseRestTest {
   public void queryTestPlugin() {
     String query = "{\"queryType\":\"SQL\",\"query\":\"SELECT * FROM cp.`employee.json` LIMIT 2\"}";
     given()
+        .filter(sessionFilter)
         .body(query)
         .with()
         .contentType("application/json")
@@ -158,6 +164,7 @@ public class StorageTest extends BaseRestTest {
     "  }" +
     "}";
     given()
+        .filter(sessionFilter)
         .body(updatePlugin)
         .with()
         .contentType("application/json")
@@ -170,6 +177,7 @@ public class StorageTest extends BaseRestTest {
   @Test(dependsOnMethods = {"updateTestPlugin"})
   public void checkUpdatedTestPlugin() {
     given()
+        .filter(sessionFilter)
         .when()
         .get("/storage/testPlugin.json")
         .then()
@@ -194,6 +202,7 @@ public class StorageTest extends BaseRestTest {
         "     SELECT * FROM cp.`employee.json` LIMIT 2\"" +
         "}";
     given()
+        .filter(sessionFilter)
         .body(query)
         .with()
         .contentType("application/json")
@@ -224,6 +233,7 @@ public class StorageTest extends BaseRestTest {
 //  public void verifyTestQueryProfileInfo() {
 
     given()
+        .filter(sessionFilter)
         .pathParam("queryID", queryId_1)
         .when()
         .get("/profiles/{queryID}.json")
@@ -247,6 +257,7 @@ public class StorageTest extends BaseRestTest {
   @Test(dependsOnMethods = {"checkUpdatedTestPlugin"})
   public void disableTestPlugin() {
     given()
+        .filter(sessionFilter)
         .when()
         .get("/storage/testPlugin/enable/false")
         .then()
@@ -256,6 +267,7 @@ public class StorageTest extends BaseRestTest {
   @Test(dependsOnMethods = {"disableTestPlugin"})
   public void verifyDisabledTestPlugin() {
     given()
+        .filter(sessionFilter)
         .when()
         .get("/storage/testPlugin.json")
         .then()
@@ -266,6 +278,7 @@ public class StorageTest extends BaseRestTest {
   @Test(dependsOnMethods = {"verifyDisabledTestPlugin"})
   public void deleteTestPlugin() {
     given()
+        .filter(sessionFilter)
         .when()
         .delete("/storage/testPlugin.json")
         .then()
@@ -275,6 +288,7 @@ public class StorageTest extends BaseRestTest {
   @Test(dependsOnMethods = {"deleteTestPlugin"})
   public void checkDeleteTestPlugin() {
     given()
+        .filter(sessionFilter)
         .when()
         .get("/storage/testPlugin.json")
         .then()
