@@ -24,4 +24,33 @@ public class OptionsPage extends BasePage {
   @FindBy (css = "a[href='/options']")
   WebElement optionsTab;
 
+  @FindBy (css = "input[id='searchBox']")
+  WebElement searchField;
+
+  @FindBy (css = "button[title='Clear search']")
+  WebElement clearSearchButton;
+
+  @FindBy (xpath = "//button[text()='planner']")
+  WebElement plannerFilter;
+
+  @FindBy (xpath = "//button[text()='store']")
+  WebElement storeFilter;
+
+  @FindBy (xpath = "//button[text()='parquet']")
+  WebElement parquetFilter;
+
+  @FindBy (xpath = "//button[text()='hashagg']")
+  WebElement hashaggFilter;
+
+  @FindBy (xpath = "//button[text()='hashjoin']")
+  WebElement hashjoinFilter;
+
+  @FindBy (xpath = "//th[text()='OPTION']")
+  WebElement optionSortBy;
+
+  @FindBy (xpath = "//th[text()='VALUE']")
+  WebElement valueSortBy;
+
+  @FindBy (xpath = "//th[text()='DESCRIPTION']")
+  WebElement descriptionSortBy;
 }
