@@ -53,4 +53,9 @@ public class OptionsPage extends BasePage {
 
   @FindBy (xpath = "//th[text()='DESCRIPTION']")
   WebElement descriptionSortBy;
+
+  @FindBy (css = "button[onclick=\"alterSysOptionUsingId('drill.exec.functions.cast_empty_string_to_null')\"]")
+  WebElement updateBoolean;
+
+
 }
