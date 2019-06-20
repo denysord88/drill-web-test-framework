@@ -20,14 +20,16 @@ package org.apache.drill_web_test_framework.web_ui.steps;
 import org.apache.drill_web_test_framework.web_ui.pages.BasePage;
 import org.apache.drill_web_test_framework.web_ui.pages.OptionsPage;
 
-public final class OptionsSteps extends BaseSteps{
+import java.util.List;
+
+public final class OptionsSteps extends BaseSteps {
 
   private OptionsPage getOptionsPage() {
     return BasePage.getPage(OptionsPage.class);
   }
 
   public void searchFieldSendKeys(String string) {
-  getOptionsPage().searchFieldSendKeys(string);
+    getOptionsPage().searchFieldSendKeys(string);
   }
 
   public void clearSearchField() {
@@ -42,7 +44,7 @@ public final class OptionsSteps extends BaseSteps{
     getOptionsPage().setBooleanToDefault();
   }
 
-  public void updateNumericOption(String string){
+  public void updateNumericOption(String string) {
     getOptionsPage().updateNumericOption(string);
   }
 
@@ -50,7 +52,7 @@ public final class OptionsSteps extends BaseSteps{
     getOptionsPage().setNumericToDefault();
   }
 
-  public void updateStringOption(String string){
+  public void updateStringOption(String string) {
     getOptionsPage().updateStringOption(string);
   }
 
@@ -78,6 +80,10 @@ public final class OptionsSteps extends BaseSteps{
     getOptionsPage().selectHashJoinFilter();
   }
 
+  public List<List<String>> getOptionsTable() {
+    return getOptionsPage().getOptionsTable();
+  }
+
   public void sortByOption() {
     getOptionsPage().sortByOption();
   }
@@ -90,4 +96,31 @@ public final class OptionsSteps extends BaseSteps{
     getOptionsPage().sortByDescription();
   }
 
+  public boolean isValueEqualsTrue() {
+    return getOptionsPage().isValueEqualsTrue();
+  }
+
+  public boolean isValueEqualsFalse() {
+    return getOptionsPage().isValueEqualsFalse();
+  }
+
+  public boolean isValueOfNumericUpdated() {
+    return getOptionsPage().isValueOfNumericUpdated();
+  }
+
+  public boolean isValueOfNumericDefault() {
+    return getOptionsPage().isValueOfNumericDefault();
+  }
+
+  public boolean isValueOfStringUpdated(){
+    return getOptionsPage().isValueOfStringUpdated();
+  }
+
+  public boolean isValueOfStringDefault(){
+    return getOptionsPage().isValueOfStringDefault();
+  }
+
+  public boolean areAllOptionsOnTheScreen(){
+    return getOptionsPage().areAllOptionsOnTheScreen();
+  }
 }

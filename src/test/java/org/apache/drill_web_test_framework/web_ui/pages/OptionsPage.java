@@ -17,8 +17,11 @@
  */
 package org.apache.drill_web_test_framework.web_ui.pages;
 
+import org.apache.drill_web_test_framework.web_ui.WebBrowser;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import java.util.List;
 
 public class OptionsPage extends BasePage {
 
@@ -27,6 +30,9 @@ public class OptionsPage extends BasePage {
 
   @FindBy(css = "button[title='Clear search']")
   private WebElement clearSearchButton;
+
+  @FindBy(id = "optionsTbl")
+  private WebElement optionTable;
 
   @FindBy(xpath = "//button[text()='planner']")
   private WebElement plannerFilter;
@@ -81,6 +87,31 @@ public class OptionsPage extends BasePage {
 
   @FindBy(css = "button[onclick=\"alterSysOption('drill.exec.storage.file.partition.column.label','dir', 'STRING')\"]")
   private WebElement stringDefaultButton;
+
+  @FindBy(css = "form[id='drill.exec.functions.cast_empty_string_to_null']>div>div>select>option[value='true']:checked")
+  private WebElement valueOfBooleanTrue;
+
+  @FindBy(css = "form[id='drill.exec.functions.cast_empty_string_to_null']>div>div>select>option[value='false']:checked")
+  private WebElement valueOfBooleanFalse;
+
+  @FindBy(css = "input[value='16777217']")
+  private WebElement updatedValueOfNumeric;
+
+  @FindBy(css = "input[value='16777216']")
+  private WebElement defaultValueOfNumeric;
+
+  @FindBy(css = "input[value='test']")
+  private WebElement updatedValueOfString;
+
+  @FindBy(css = "input[value='dir']")
+  private WebElement defaultValueOfString;
+
+  @FindBy(xpath = "//div[starts-with(text(),\"Found\")]")
+  private WebElement foundMatchesOptions;
+
+  public List<List<String>> getOptionsTable() {
+    return getTable(optionTable);
+  }
 
   public void searchFieldSendKeys(String string) {
     searchField.clear();
@@ -151,6 +182,38 @@ public class OptionsPage extends BasePage {
 
   public void sortByDescription() {
     descriptionSortBy.click();
+  }
+
+  public boolean isValueEqualsTrue() {
+    return valueOfBooleanTrue.isEnabled();
+  }
+
+  public boolean isValueEqualsFalse() {
+    return valueOfBooleanFalse.isEnabled();
+  }
+
+  public boolean isValueOfNumericUpdated(){
+    return updatedValueOfNumeric.isEnabled();
+  }
+
+  public boolean isValueOfNumericDefault(){
+    return defaultValueOfNumeric.isEnabled();
+  }
+
+  public boolean isValueOfStringUpdated(){
+    return updatedValueOfString.isEnabled();
+  }
+
+  public boolean isValueOfStringDefault(){
+    return defaultValueOfString.isEnabled();
+  }
+
+  public boolean areAllOptionsOnTheScreen(){
+    String matches = foundMatchesOptions.getText();
+    StringBuffer stringBuffer =new StringBuffer(matches);
+    String matches2 = stringBuffer.substring(6,9);
+    System.out.println(matches2);
+    return true;
   }
 
 }
