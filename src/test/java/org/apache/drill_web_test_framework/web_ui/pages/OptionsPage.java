@@ -17,7 +17,6 @@
  */
 package org.apache.drill_web_test_framework.web_ui.pages;
 
-import org.apache.drill_web_test_framework.web_ui.WebBrowser;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -129,6 +128,7 @@ public class OptionsPage extends BasePage {
   }
 
   public void setBooleanToDefault() {
+    waitForCondition(driver -> booleanDefaultButton.isEnabled(), 5);
     booleanDefaultButton.click();
   }
 
@@ -184,36 +184,61 @@ public class OptionsPage extends BasePage {
     descriptionSortBy.click();
   }
 
+  public void waitForValueEqualsTrue() {
+    waitForCondition(driver -> valueOfBooleanTrue.isDisplayed(), 5);
+  }
+
   public boolean isValueEqualsTrue() {
-    return valueOfBooleanTrue.isEnabled();
+    return valueOfBooleanTrue.isSelected();
   }
 
   public boolean isValueEqualsFalse() {
     return valueOfBooleanFalse.isEnabled();
   }
 
-  public boolean isValueOfNumericUpdated(){
-    return updatedValueOfNumeric.isEnabled();
+  public boolean isValueOfNumericUpdated() {
+    return updatedValueOfNumeric.isDisplayed();
   }
 
-  public boolean isValueOfNumericDefault(){
+  public boolean isValueOfNumericDefault() {
     return defaultValueOfNumeric.isEnabled();
   }
 
-  public boolean isValueOfStringUpdated(){
+  public boolean isValueOfStringUpdated() {
     return updatedValueOfString.isEnabled();
   }
 
-  public boolean isValueOfStringDefault(){
+  public boolean isValueOfStringDefault() {
     return defaultValueOfString.isEnabled();
   }
 
-  public boolean areAllOptionsOnTheScreen(){
-    String matches = foundMatchesOptions.getText();
-    StringBuffer stringBuffer =new StringBuffer(matches);
-    String matches2 = stringBuffer.substring(6,9);
-    System.out.println(matches2);
-    return true;
+  public boolean isClearButtonWorks() {
+    String fieldContent = searchField.getAttribute("value");
+    return fieldContent.equals("");
   }
 
+  public boolean isPlannerInSearchField() {
+    String fieldContent = searchField.getAttribute("value");
+    return fieldContent.equals("planner");
+  }
+
+  public boolean isStoreInSearchField() {
+    String fieldContent = searchField.getAttribute("value");
+    return fieldContent.equals("store");
+  }
+
+  public boolean isParquetInSearchField() {
+    String fieldContent = searchField.getAttribute("value");
+    return fieldContent.equals("parquet");
+  }
+
+  public boolean isHashAggInSearchField() {
+    String fieldContent = searchField.getAttribute("value");
+    return fieldContent.equals("hashagg");
+  }
+
+  public boolean isHashJoinInSearchField() {
+    String fieldContent = searchField.getAttribute("value");
+    return fieldContent.equals("hashjoin");
+  }
 }

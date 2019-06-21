@@ -96,6 +96,10 @@ public final class OptionsSteps extends BaseSteps {
     getOptionsPage().sortByDescription();
   }
 
+  public void waitForValueEqualsTrue() {
+    getOptionsPage().waitForValueEqualsTrue();
+  }
+
   public boolean isValueEqualsTrue() {
     return getOptionsPage().isValueEqualsTrue();
   }
@@ -112,15 +116,35 @@ public final class OptionsSteps extends BaseSteps {
     return getOptionsPage().isValueOfNumericDefault();
   }
 
-  public boolean isValueOfStringUpdated(){
+  public boolean isValueOfStringUpdated() {
     return getOptionsPage().isValueOfStringUpdated();
   }
 
-  public boolean isValueOfStringDefault(){
+  public boolean isValueOfStringDefault() {
     return getOptionsPage().isValueOfStringDefault();
   }
 
-  public boolean areAllOptionsOnTheScreen(){
-    return getOptionsPage().areAllOptionsOnTheScreen();
+  public boolean isClearButtonWorks() {
+    return getOptionsPage().isClearButtonWorks();
+  }
+
+  public boolean isPlannerInSearchField() {
+    return getOptionsPage().isPlannerInSearchField();
+  }
+
+  public boolean isStoreInSearchField() {
+    return getOptionsPage().isStoreInSearchField();
+  }
+
+  public boolean isParquetInSearchField() {
+    return getOptionsPage().isParquetInSearchField();
+  }
+
+  public boolean isHashAggInSearchField() {
+    return getOptionsPage().isHashAggInSearchField();
+  }
+
+  public boolean isHashJoinInSearchField() {
+    return getOptionsPage().isHashJoinInSearchField();
   }
 }
