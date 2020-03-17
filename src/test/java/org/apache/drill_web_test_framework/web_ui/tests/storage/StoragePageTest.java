@@ -32,6 +32,7 @@ import static org.testng.Assert.assertTrue;
 public class StoragePageTest extends FunctionalTest {
 
   private final NavigationSteps navigationSteps = BaseSteps.getSteps(NavigationSteps.class);
+  private final StorageSteps storageSteps = BaseSteps.getSteps(StorageSteps.class);
 
   @BeforeClass
   public void setupStoragePlugins() {
@@ -40,7 +41,7 @@ public class StoragePageTest extends FunctionalTest {
 
   @BeforeMethod
   public void navigateStorage() {
-   navigationSteps.navigateStorage();
+    navigationSteps.navigateStorage();
   }
 
   @Test(groups = {"functional"})
@@ -49,7 +50,7 @@ public class StoragePageTest extends FunctionalTest {
         "cp", "dfs", "hbase", "hive", "kafka", "kudu", "mongo", "opentsdb", "s3"
     };
     for (String plugin : plugins) {
-      assertTrue(StorageSteps.exists(plugin),
+      assertTrue(storageSteps.exists(plugin),
           String.format("The plugin \"%s\" is not present!", plugin));
     }
   }
@@ -60,7 +61,7 @@ public class StoragePageTest extends FunctionalTest {
         "cp", "dfs"
     };
     for (String plugin : plugins) {
-      assertTrue(StorageSteps.enabled(plugin),
+      assertTrue(storageSteps.enabled(plugin),
           String.format("The plugin \"%s\" is not enabled!", plugin));
     }
   }
@@ -68,12 +69,17 @@ public class StoragePageTest extends FunctionalTest {
   @Test(groups = {"functional"})
   public void enableDisablePlugin() {
     String pluginTested = "dfs";
-    if (!StorageSteps.enabled(pluginTested)) {
-      StorageSteps.enable(pluginTested);
+    if (!storageSteps.enabled(pluginTested)) {
+      storageSteps.enable(pluginTested);
     }
-    StorageSteps.disable(pluginTested);
-    assertFalse(StorageSteps.enabled(pluginTested));
-    StorageSteps.enable(pluginTested);
-    assertTrue(StorageSteps.enabled(pluginTested));
+    storageSteps.disable(pluginTested)
+        .cancelAction();
+    assertTrue(storageSteps.enabled(pluginTested));
+    storageSteps.disable(pluginTested)
+        .confirmAction();
+    storageSteps.waitStoragePluginToBeDisabled(pluginTested);
+    assertFalse(storageSteps.enabled(pluginTested));
+    storageSteps.enable(pluginTested);
+    assertTrue(storageSteps.enabled(pluginTested));
   }
 }

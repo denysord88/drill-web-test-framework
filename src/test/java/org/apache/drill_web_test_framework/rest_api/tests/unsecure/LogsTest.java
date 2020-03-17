@@ -17,6 +17,7 @@
 package org.apache.drill_web_test_framework.rest_api.tests.unsecure;
 
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.text.SimpleDateFormat;
@@ -57,8 +58,7 @@ public class LogsTest extends BaseRestTest {
         .body("name", hasItems(
             equalTo("drillbit.log"),
             equalTo("drillbit.out"),
-            equalTo("drillbit_queries.json"),
-            equalTo("sqlline.log")))
+            equalTo("drillbit_queries.json")))
         .body("lastModified", hasItem(containsString(df.format(new Date()))));
   }
 
@@ -102,6 +102,7 @@ public class LogsTest extends BaseRestTest {
   }
 
   @Test
+  @Ignore
   public void sqllineContent() {
     given()
         .filter(sessionFilter)
@@ -115,6 +116,7 @@ public class LogsTest extends BaseRestTest {
   }
 
   @Test
+  @Ignore
   public void sqllineQueriesContent() {
     given()
         .filter(sessionFilter)

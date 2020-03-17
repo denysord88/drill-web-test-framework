@@ -20,72 +20,75 @@ package org.apache.drill_web_test_framework.web_ui.steps;
 import org.apache.drill_web_test_framework.web_ui.pages.BasePage;
 import org.apache.drill_web_test_framework.web_ui.pages.EditStoragePluginPage;
 
-public class EditStoragePluginSteps {
+public class EditStoragePluginSteps extends BaseSteps {
 
-  private EditStoragePluginSteps() {
-  }
-
-  private static EditStoragePluginPage getPage() {
+  private EditStoragePluginPage getPage() {
     return BasePage.getPage(EditStoragePluginPage.class);
   }
 
-  public static void setPluginConfig(String pluginConfig) {
+  public EditStoragePluginSteps setPluginConfig(String pluginConfig) {
     getPage()
         .setPluginConfig(pluginConfig);
+    return this;
   }
 
-  public static void back() {
+  public StorageSteps back() {
     getPage()
         .back();
+    return getSteps(StorageSteps.class);
   }
 
-  public static boolean enabled() {
-    BaseSteps.setImplicitWait(0);
+  public boolean enabled() {
+    setImplicitWait(0);
     boolean result = getPage().disableButtonPresented() &&
         !getPage().enableButtonPresented();
-    BaseSteps.resetImplicitWait();
+    resetImplicitWait();
     return result;
   }
 
-  public static boolean disabled() {
-    BaseSteps.setImplicitWait(0);
+  public boolean disabled() {
+    setImplicitWait(0);
     boolean result = !getPage().disableButtonPresented() &&
         getPage().enableButtonPresented();
-    BaseSteps.resetImplicitWait();
+    resetImplicitWait();
     return result;
   }
 
-  public static boolean waitForEnabled() {
+  public boolean waitForEnabled() {
     getPage().waitForEnabled();
     return enabled();
   }
 
-  public static boolean waitForDisabled() {
+  public boolean waitForDisabled() {
     getPage().waitForDisabled();
     return disabled();
   }
 
-  public static String getPluginConfig() {
+  public String getPluginConfig() {
     return getPage().getPluginConfig();
   }
 
-  public static void update() {
+  public EditStoragePluginSteps update() {
     getPage().update();
+    return this;
   }
 
-  public static void enable() {
+  public EditStoragePluginSteps enable() {
     getPage().enable();
+    return this;
   }
 
-  public static void disable() {
+  public ConfirmDialogSteps disable() {
     getPage().disable();
+    return getSteps(ConfirmDialogSteps.class);
   }
 
-  public static void delete() {
+  public ConfirmDialogSteps delete() {
     getPage().delete();
+    return getSteps(ConfirmDialogSteps.class);
   }
 
-  public static String getMessage() {
+  public String getMessage() {
     return getPage().getMessage();
   }
 }
