@@ -26,13 +26,14 @@ import org.apache.drill_web_test_framework.web_ui.tests.FunctionalTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import static org.apache.drill_web_test_framework.web_ui.steps.ConfirmDialogSteps.getConfirmDialog;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 public class StoragePluginsCRUDTest extends FunctionalTest {
   private final StorageSteps storageSteps = BaseSteps.getSteps(StorageSteps.class);
+  private final EditStoragePluginSteps editStoragePluginSteps = BaseSteps.getSteps(EditStoragePluginSteps.class);
   private final NavigationSteps navigationSteps = BaseSteps.getSteps(NavigationSteps.class);
 
   private String testPluginConfig =
@@ -55,10 +56,10 @@ public class StoragePluginsCRUDTest extends FunctionalTest {
   @BeforeMethod
   public void beforeMethod() {
     navigationSteps.navigateStorage();
-    if (StorageSteps.exists(testPluginName)) {
-      StorageSteps.update(testPluginName);
-      EditStoragePluginSteps.delete();
-      getConfirmDialog().confirmAction();
+    if (storageSteps.exists(testPluginName)) {
+      storageSteps.update(testPluginName)
+          .delete()
+          .confirmAction();
       BaseSteps.waitForURL("/storage");
     }
   }
@@ -66,22 +67,22 @@ public class StoragePluginsCRUDTest extends FunctionalTest {
   @Test(groups = {"functional"})
   public void addPluginCancel() {
     storageSteps.openCreatePluginDialog();
-    assertTrue(StorageSteps.addPluginMode());
+    assertTrue(storageSteps.addPluginMode());
     storageSteps.fillNewPluginData(testPluginName, testPluginConfig)
         .closeNewPluginForm();
     assertEquals(BaseSteps.getURL(), "/storage");
-    assertFalse(StorageSteps.exists(testPluginName));
+    assertFalse(storageSteps.exists(testPluginName));
   }
 
   @Test(groups = {"functional"})
   public void addPluginCreate() {
     storageSteps.openCreatePluginDialog();
-    assertTrue(StorageSteps.addPluginMode());
+    assertTrue(storageSteps.addPluginMode());
     storageSteps.fillNewPluginData(testPluginName, testPluginConfig)
             .submitNewPluginForm();
     assertEquals(BaseSteps.getURL(), "/storage");
-    assertTrue(StorageSteps.exists(testPluginName));
-    assertFalse(StorageSteps.enabled(testPluginName));
+    assertTrue(storageSteps.exists(testPluginName));
+    assertFalse(storageSteps.enabled(testPluginName));
   }
 
   @Test(groups = {"functional"})
@@ -89,101 +90,101 @@ public class StoragePluginsCRUDTest extends FunctionalTest {
     storageSteps.openCreatePluginDialog()
         .fillNewPluginData(testPluginName, testPluginConfig.replace("\"enabled\": false", "\"enabled\": true"))
         .submitNewPluginForm();
-    assertTrue(StorageSteps.enabled(testPluginName));
+    assertTrue(storageSteps.enabled(testPluginName));
   }
 
   @Test(groups = {"functional"})
   public void updatePluginUnableToParse() {
-    storageSteps.create(testPluginName, testPluginConfig);
-    StorageSteps.update(testPluginName);
-    String modifiedConfig = EditStoragePluginSteps.getPluginConfig()
+    String modifiedConfig = storageSteps.create(testPluginName, testPluginConfig)
+        .update(testPluginName)
+        .getPluginConfig()
         .toUpperCase();
-    EditStoragePluginSteps.setPluginConfig(modifiedConfig);
-    EditStoragePluginSteps.update();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Please retry: Error (unable to parse JSON)");
-    EditStoragePluginSteps.back();
-    StorageSteps.update(testPluginName);
-    assertEquals(EditStoragePluginSteps.getPluginConfig(), testPluginConfig);
+    editStoragePluginSteps.setPluginConfig(modifiedConfig)
+        .update();
+    assertEquals(editStoragePluginSteps.getMessage(), "Please retry: Invalid JSON");
+    editStoragePluginSteps.back()
+        .update(testPluginName);
+    assertEquals(editStoragePluginSteps.getPluginConfig(), testPluginConfig);
   }
 
   @Test(groups = {"functional"})
   public void updatePluginUnableInvalidMapping() {
-    storageSteps.create(testPluginName, testPluginConfig);
-    StorageSteps.update(testPluginName);
-    String modifiedConfig = EditStoragePluginSteps.getPluginConfig()
+    String modifiedConfig = storageSteps.create(testPluginName, testPluginConfig)
+        .update(testPluginName)
+        .getPluginConfig()
         .replace("kafka", "KAFKA");
-    EditStoragePluginSteps.setPluginConfig(modifiedConfig);
-    EditStoragePluginSteps.update();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Please retry: Error (invalid JSON mapping)");
-    EditStoragePluginSteps.back();
-    StorageSteps.update(testPluginName);
-    assertEquals(EditStoragePluginSteps.getPluginConfig(), testPluginConfig);
+    editStoragePluginSteps.setPluginConfig(modifiedConfig)
+        .update();
+    assertEquals(editStoragePluginSteps.getMessage(), "Please retry: Invalid JSON");
+    editStoragePluginSteps.back()
+        .update(testPluginName);
+    assertEquals(editStoragePluginSteps.getPluginConfig(), testPluginConfig);
   }
 
   @Test(groups = {"functional"})
   public void updatePluginSuccess() {
-    storageSteps.create(testPluginName, testPluginConfig);
-    StorageSteps.update(testPluginName);
-    String modifiedConfig = EditStoragePluginSteps.getPluginConfig()
+    String modifiedConfig = storageSteps.create(testPluginName, testPluginConfig)
+        .update(testPluginName)
+        .getPluginConfig()
         .replace("9092", "1111");
-    EditStoragePluginSteps.setPluginConfig(modifiedConfig);
-    EditStoragePluginSteps.update();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Success");
+    editStoragePluginSteps.setPluginConfig(modifiedConfig)
+        .update();
+    assertEquals(editStoragePluginSteps.getMessage(), "Success");
     BaseSteps.waitForURL("/storage");
-    StorageSteps.update(testPluginName);
-    assertEquals(EditStoragePluginSteps.getPluginConfig(), modifiedConfig);
+    storageSteps.update(testPluginName);
+    assertEquals(editStoragePluginSteps.getPluginConfig(), modifiedConfig);
   }
 
   @Test(groups = {"functional"})
   public void updatePluginEnableDisable() {
-    storageSteps.create(testPluginName, testPluginConfig);
-    StorageSteps.update(testPluginName);
-    String modifiedConfig = EditStoragePluginSteps.getPluginConfig()
+    String modifiedConfig = storageSteps.create(testPluginName, testPluginConfig)
+        .update(testPluginName)
+        .getPluginConfig()
         .replace("\"enabled\": false", "\"enabled\": true");
-    EditStoragePluginSteps.setPluginConfig(modifiedConfig);
-    EditStoragePluginSteps.update();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Success");
+    editStoragePluginSteps.setPluginConfig(modifiedConfig)
+        .update();
+    assertEquals(editStoragePluginSteps.getMessage(), "Success");
     BaseSteps.waitForURL("/storage");
-    assertTrue(StorageSteps.enabled(testPluginName));
-    StorageSteps.update(testPluginName);
-    EditStoragePluginSteps.setPluginConfig(testPluginConfig);
-    EditStoragePluginSteps.update();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Success");
+    assertTrue(storageSteps.enabled(testPluginName));
+    storageSteps.update(testPluginName)
+        .setPluginConfig(testPluginConfig)
+        .update();
+    assertEquals(editStoragePluginSteps.getMessage(), "Success");
     BaseSteps.waitForURL("/storage");
-    assertFalse(StorageSteps.enabled(testPluginName));
+    assertFalse(storageSteps.enabled(testPluginName));
   }
 
   @Test(groups = {"functional"})
   public void enableDisablePlugin() {
-    storageSteps.create(testPluginName, testPluginConfig);
-    StorageSteps.update(testPluginName);
-    EditStoragePluginSteps.enable();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Success");
-    assertTrue(EditStoragePluginSteps.waitForEnabled());
-    EditStoragePluginSteps.back();
-    assertTrue(StorageSteps.enabled(testPluginName));
-    StorageSteps.update(testPluginName);
-    EditStoragePluginSteps.disable();
-    getConfirmDialog().confirmAction();
-    assertEquals(EditStoragePluginSteps.getMessage(), "Success");
-    assertTrue(EditStoragePluginSteps.waitForDisabled());
-    EditStoragePluginSteps.back();
-    assertFalse(StorageSteps.enabled(testPluginName));
+    storageSteps.create(testPluginName, testPluginConfig)
+        .update(testPluginName)
+        .enable();
+    assertEquals(editStoragePluginSteps.getMessage(), "Success");
+    assertTrue(editStoragePluginSteps.waitForEnabled());
+    editStoragePluginSteps.back();
+    assertTrue(storageSteps.enabled(testPluginName));
+    storageSteps.update(testPluginName)
+        .disable()
+        .confirmAction();
+    assertEquals(editStoragePluginSteps.getMessage(), "Success");
+    assertTrue(editStoragePluginSteps.waitForDisabled());
+    editStoragePluginSteps.back();
+    assertFalse(storageSteps.enabled(testPluginName));
   }
 
   @Test(groups = {"functional"})
   public void deletePlugin() {
-    storageSteps.create(testPluginName, testPluginConfig);
-    StorageSteps.update(testPluginName);
-    EditStoragePluginSteps.delete();
-    getConfirmDialog().cancelAction();
+    storageSteps.create(testPluginName, testPluginConfig)
+        .update(testPluginName)
+        .delete()
+        .cancelAction();
     assertEquals(BaseSteps.getURL(), "/storage/" + testPluginName);
-    EditStoragePluginSteps.back();
-    assertTrue(StorageSteps.exists(testPluginName));
-    StorageSteps.update(testPluginName);
-    EditStoragePluginSteps.delete();
-    getConfirmDialog().confirmAction();
+    editStoragePluginSteps.back();
+    assertTrue(storageSteps.exists(testPluginName));
+    storageSteps.update(testPluginName)
+        .delete()
+        .confirmAction();
     BaseSteps.waitForURL("/storage");
-    assertFalse(StorageSteps.exists(testPluginName));
+    assertFalse(storageSteps.exists(testPluginName));
   }
 }

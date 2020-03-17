@@ -20,26 +20,25 @@ package org.apache.drill_web_test_framework.web_ui.steps;
 import org.apache.drill_web_test_framework.web_ui.pages.StoragePage;
 
 import static org.apache.drill_web_test_framework.web_ui.pages.BasePage.getPage;
-import static org.apache.drill_web_test_framework.web_ui.steps.ConfirmDialogSteps.getConfirmDialog;
 
 public final class StorageSteps extends BaseSteps {
 
-  public static boolean exists(String name) {
+  public boolean exists(String name) {
     return getStoragePage().storagePluginExists(name);
   }
 
-  public static boolean enabled(String name) {
+  public boolean enabled(String name) {
     return getStoragePage().storagePluginEnabled(name);
   }
 
-  public static void enable(String name) {
+  public StorageSteps enable(String name) {
     getStoragePage().enableStoragePlugin(name);
+    return this;
   }
 
-  public static void disable(String name) {
+  public ConfirmDialogSteps disable(String name) {
     getStoragePage().disableStoragePlugin(name);
-    getConfirmDialog().confirmAction();
-    getStoragePage().waitStoragePluginToBeDisabled(name);
+    return getSteps(ConfirmDialogSteps.class);
   }
 
   public StorageSteps openCreatePluginDialog() {
@@ -48,7 +47,7 @@ public final class StorageSteps extends BaseSteps {
     return this;
   }
 
-  public static boolean addPluginMode() {
+  public boolean addPluginMode() {
     return getStoragePage().formTitlePresented() &&
         getStoragePage().pluginNameInputPresented() &&
         getStoragePage().closeButtonPresented() &&
@@ -72,17 +71,23 @@ public final class StorageSteps extends BaseSteps {
     return this;
   }
 
-  public void create(String testPluginName, String testPluginConfig) {
-    openCreatePluginDialog();
-    fillNewPluginData(testPluginName, testPluginConfig);
-    submitNewPluginForm();
+  public StorageSteps create(String testPluginName, String testPluginConfig) {
+    return openCreatePluginDialog()
+        .fillNewPluginData(testPluginName, testPluginConfig)
+        .submitNewPluginForm();
   }
 
-  public static void update(String name) {
+  public EditStoragePluginSteps update(String name) {
     getStoragePage().updateStoragePlugin(name);
+    return getSteps(EditStoragePluginSteps.class);
   }
 
-  private static StoragePage getStoragePage() {
+  public StorageSteps waitStoragePluginToBeDisabled(String name) {
+    getStoragePage().waitStoragePluginToBeDisabled(name);
+    return this;
+  }
+
+  private StoragePage getStoragePage() {
     return getPage(StoragePage.class);
   }
 }
