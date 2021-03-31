@@ -19,7 +19,7 @@
     <rest-assured.version>3.1.0</rest-assured.version>
     <json.version>1.8</json.version>
     <jsoup.version>1.11.3</jsoup.version>
-    <guava.version>25.0-jre</guava.version>
+    <guava.version>29.0-jre</guava.version>
   </properties>
 
   <dependencies>
